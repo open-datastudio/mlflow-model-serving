@@ -50,8 +50,6 @@ metadata:
   name: mlflow-serving
 spec:
   ports:
-  - name: console
-    port: 7681
   - name: mlflow-serving
     port: 5001
   selector:

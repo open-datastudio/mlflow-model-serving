@@ -1,6 +1,8 @@
 FROM jupyter/minimal-notebook
 
 USER 0
+RUN apt-get update && apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
 
 USER 1000
 ADD requirements.txt /home/jovyan/.requirements.txt
