@@ -1,0 +1,22 @@
+apiVersion: beta/v1
+build:
+  skaffold:
+    file: skaffold.yaml
+ingress:
+  - serviceName: mlflow-serving
+    port: 5000
+deploy:
+  dependencies:
+    - project: open-datastudio/mlflow-server
+      level: OPTIONAL
+  implements: open-datastudio/mlflow-model-serving
+  paramGroups:
+    - name: Configurations
+      params:
+      - name: "Model URI"
+        description: "URI to the model. A 'runs:/' URI, or a
+        remote storage URI (e.g., an 's3://' URI)"
+        type: STRING
+        defaultValue: ""
+        paths:
+        - ConfigMap:mlflow-serving-conf:data.MODEL_PATH
