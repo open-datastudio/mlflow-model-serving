@@ -17,8 +17,6 @@ spec:
       - name: mlflow-serving
         image: mlflow-serving
         command: 
-        - "ttyd"
-        - "-R"
         - "bash"
         - "-c"
         - >-
@@ -32,7 +30,7 @@ spec:
           -p 5001
           -h 0.0.0.0
           --install-mlflow ||
-          echo "done"
+          sleep 3600
         env:
         - name: POD_NAMESPACE
           valueFrom:
