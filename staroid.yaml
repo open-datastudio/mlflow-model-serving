@@ -4,7 +4,7 @@ build:
     file: skaffold.yaml
 ingress:
   - serviceName: mlflow-serving
-    port: 5000
+    port: 7681
 deploy:
   dependencies:
     - project: open-datastudio/mlflow-server
