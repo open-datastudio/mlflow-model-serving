@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: mlflow-serving
+        pod.staroid.com/isolation: dedicated
+        pod.staroid.com/instance-type: standard-2
         pod.staroid.com/spot: "true"
     spec:
       containers:
