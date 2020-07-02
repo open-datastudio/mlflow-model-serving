@@ -20,9 +20,6 @@ spec:
       securityContext:
         runAsUser: 1000
       containers:
-      - name: postwoman
-        image: liyasthomas/postwoman:v1.9.7
-        command: 
       - name: information
         image: python:3.7.8
         command:
@@ -55,18 +52,7 @@ spec:
       volumes:
       - name: information-conf-volume
         configMap:
-          name: information-conf  
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: postwoman
-spec:
-  ports:
-  - name: postwoman
-    port: 3000
-  selector:
-    app: mlflow-serving-info
+          name: information-conf
 ---
 kind: Service
 apiVersion: v1
@@ -108,12 +94,6 @@ data:
         <b>Internal</b> (from the same virtual cloud)
         <br />
         <code>http://mlflow-serving.NAMESPACE:5001/invocations</code>
-        <br /><br />
-        <b>Test</b>
-        <br />
-        <a href="https://p3000-postwoman--STAROID_SERVICE_DOMAIN?method=POST&url=https://p5001-mlflow-serving--STAROID_SERVICE_DOMAIN&path=/invocations&contentType=application/json">
-          http request
-        </a> to the endpoint
         <br /><br /><br /><br />
         <h3>Environment</h3>
         <b>Model URI</b>
