@@ -2,6 +2,10 @@ apiVersion: beta/v1
 build:
   skaffold:
     file: skaffold.yaml
+    profile: staroid
+ingress:
+  - serviceName: mlflow-serving
+    port: 5001
 deploy:
   dependencies:
     - project: open-datastudio/mlflow-server

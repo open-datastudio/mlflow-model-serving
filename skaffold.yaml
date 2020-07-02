@@ -12,3 +12,9 @@ deploy:
       - k8s/mlflow-env.yaml
       - k8s/mlflow-serving-conf.yaml
       - k8s/mlflow-serving.yaml
+profiles:
+  - name: staroid
+    patches:
+      - op: add
+        path: /deploy/kubectl/manifests/0
+        value: ./k8s/ske.yaml
