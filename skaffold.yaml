@@ -17,4 +17,4 @@ profiles:
     patches:
       - op: add
         path: /deploy/kubectl/manifests/0
-        value: ./k8s/staroid.yaml
+        value: ./k8s/ske.yaml

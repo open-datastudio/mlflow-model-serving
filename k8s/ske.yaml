@@ -1,3 +1,7 @@
+###############################################
+# Additional Configurations
+# for SKE (Staroid Kubernetes Engine)
+###############################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,6 +17,8 @@ spec:
         app: mlflow-serving-info
         pod.staroid.com/spot: "true"
     spec:
+      securityContext:
+        runAsUser: 1000
       containers:
       - name: postwoman
         image: liyasthomas/postwoman:v1.9.7
