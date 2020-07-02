@@ -29,6 +29,7 @@ spec:
         - bash
         - -c
         - >-
+          mkdir -p /tmp/web && cd /tmp/web &&
           cat /information-conf-volume/index.html |
           sed "s/NAMESPACE/$POD_NAMESPACE/g" |
           sed "s/MLFLOW_TRACKING_URI/$MLFLOW_TRACKING_URI/g" |
