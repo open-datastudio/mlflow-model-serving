@@ -31,10 +31,10 @@ spec:
         - >-
           mkdir -p /tmp/web && cd /tmp/web &&
           cat /information-conf-volume/index.html |
-          sed "s/NAMESPACE/$POD_NAMESPACE/g" |
-          sed "s/MLFLOW_TRACKING_URI/$MLFLOW_TRACKING_URI/g" |
-          sed "s/MODEL_URI/$MODEL_URI/g" |
-          sed "s/STAROID_SERVICE_DOMAIN/$STAROID_SERVICE_DOMAIN/g"
+          sed "s|NAMESPACE|$POD_NAMESPACE|g" |
+          sed "s|MLFLOW_TRACKING_URI|$MLFLOW_TRACKING_URI|g" |
+          sed "s|MODEL_URI|$MODEL_URI|g" |
+          sed "s|STAROID_SERVICE_DOMAIN|$STAROID_SERVICE_DOMAIN|g"
           > ./index.html &&
           python -m http.server
         env:
@@ -114,6 +114,16 @@ data:
         <a href="https://p3000-postwoman--STAROID_SERVICE_DOMAIN?method=POST&url=https://p5001-mlflow-serving--STAROID_SERVICE_DOMAIN&path=/invocations&contentType=application/json">
           http request
         </a> to the endpoint
+        <br /><br /><br /><br />
+        <h3>Environment</h3>
+        <b>Model URI</b>
+        <br />
+        <code>MODEL_URI</code>
+        <br /><br />
+        <b>MLflow tracking server URI</b>
+        <br />
+        <code>MLFLOW_TRACKING_URI</code>
+        <br /><br />
       </div>
     </body>
     </html>
