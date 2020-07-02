@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-serving-info
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow-serving-info
+  template:
+    metadata:
+      labels:
+        app: mlflow-serving-info
+        pod.staroid.com/spot: "true"
+    spec:
+      containers:
+      - name: postwoman
+        image: liyasthomas/postwoman:v1.9.7
+        command: 
+      - name: information
+        image: python:3.7.8
+        command:
+        - bash
+        - -c
+        - >-
+          cat /information-conf-volume/index.html |
+          sed "s/NAMESPACE/$POD_NAMESPACE/g" |
+          sed "s/MLFLOW_TRACKING_URI/$MLFLOW_TRACKING_URI/g" |
+          sed "s/MODEL_URI/$MODEL_URI/g" |
+          sed "s/STAROID_SERVICE_DOMAIN/$STAROID_SERVICE_DOMAIN/g"
+          > ./index.html &&
+          python -m http.server
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        envFrom:
+        - configMapRef:
+            name: mlflow-serving-conf
+        - configMapRef:
+            name: mlflow-env
+        - configMapRef:
+            name: staroid-envs
+        volumeMounts:
+        - name: information-conf-volume
+          mountPath: /information-conf-volume
+      volumes:
+      - name: information-conf-volume
+        configMap:
+          name: information-conf  
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: postwoman
+spec:
+  ports:
+  - name: postwoman
+    port: 3000
+  selector:
+    app: mlflow-serving-info
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: information
+  annotations:
+    service.staroid.com/link: "show"
+spec:
+  ports:
+  - name: http
+    port: 8000
+  selector:
+    app: mlflow-serving-info
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: information-conf
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+      <style>
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <br />
+        <h3>Model endpoint</h3>
+        <b>External</b>
+        <br />
+        <code>https://p5001-mlflow-serving--STAROID_SERVICE_DOMAIN/invocations</code>
+        <br /><br />
+        <b>Internal</b> (from the same virtual cloud)
+        <br />
+        <code>http://mlflow-serving.NAMESPACE:5001/invocations</code>
+        <br /><br />
+        <b>Test</b>
+        <br />
+        <a href="https://p3000-postwoman--STAROID_SERVICE_DOMAIN?method=POST&url=https://p5001-mlflow-serving--STAROID_SERVICE_DOMAIN&path=/invocations&contentType=application/json">
+          http request
+        </a> to the endpoint
+      </div>
+    </body>
+    </html>
+---
+# See https://docs.staroid.com/references/staroid-envs.html
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: staroid-envs            
+data:
+  STAROID_SERVICE_DOMAIN: local
