@@ -5,7 +5,11 @@ RUN apt-get update && apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
 USER 1000
-ADD requirements.txt /home/jovyan/.requirements.txt
+
+# install gpu libs
+RUN conda install cudatoolkit=10.1 cudnn=7.6.5 --yes
+
+ADD --chown=1000:100 requirements.txt /home/jovyan/.requirements.txt
 RUN pip --no-cache-dir install -r /home/jovyan/.requirements.txt
 
 # mlflow creates new conda environment for run (i.e. mlflow run ...) and some dependencies need to be added.
