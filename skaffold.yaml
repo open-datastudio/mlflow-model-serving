@@ -4,8 +4,8 @@ build:
   artifacts:
     - image: mlflow-serving
       context: .
-      docker:
-        dockerfile: Dockerfile
+      custom:
+        buildCommand: ./build.sh
 deploy:
   kubectl:
     manifests:

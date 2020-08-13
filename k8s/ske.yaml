@@ -91,7 +91,7 @@ data:
         <br />
         <code>https://p5001-mlflow-serving--STAROID_SERVICE_DOMAIN/invocations</code>
         <br /><br />
-        <b>Internal</b> (from the same virtual cloud)
+        <b>Internal</b> (from the same Kubernetes cluster)
         <br />
         <code>http://mlflow-serving.NAMESPACE:5001/invocations</code>
         <br /><br /><br /><br />
