@@ -1,2 +1,2 @@
-mlflow==1.10.0
+mlflow==1.23.1
 pysftp==0.2.9
